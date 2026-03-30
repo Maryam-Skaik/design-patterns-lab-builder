@@ -125,50 +125,6 @@ SearchFilter filter = new SearchFilter(
 
 ---
 
-## 🔒 Immutability (Very Important)
-
-### What is Immutability?
-
-An immutable object is an object whose state **cannot change after it is created**.
-
----
-
-### Why is it important?
-
-- Prevents unexpected changes  
-- Safer in multi-threaded environments  
-- Easier to debug  
-- Easier to reason about  
-- Widely used in backend systems  
-
----
-
-### When should we use it?
-
-Use immutability when:
-
-- the object represents **data**  
-- the object should not change after creation  
-- consistency is important  
-
-#### Examples:
-
-- filters  
-- queries  
-- request objects  
-- configuration objects  
-
----
-
-### Why Builder supports immutability
-
-- Builder collects all values first  
-- Object is created once using `build()`  
-- Fields are set only once  
-- No setters after creation  
-
----
-
 ## 🧩 UML — Builder Structure
 
 ### Builder Pattern Relationships
@@ -176,7 +132,6 @@ Use immutability when:
 - **Composition** → Builder creates the object  
 - **Encapsulation** → Constructor is private  
 - **Dependency** → Object depends on Builder for creation  
-
 
 ---
 
