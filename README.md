@@ -1,314 +1,277 @@
-# 🏗️ Design Patterns Lab — Lecture 3: Builder Pattern
+# 🏗️ Design Patterns Lab — Builder Pattern
 
-![Topic](https://img.shields.io/badge/Topic-Builder%20Pattern-blue)
-![Week](https://img.shields.io/badge/Week-3-green)
-![Language](https://img.shields.io/badge/Language-Java-orange)
-![Focus](https://img.shields.io/badge/Focus-Creational%20Patterns-purple)
-
----
-
-## 🎥 Lecture Video
-
-This repository accompanies the lecture video explaining the **Builder Pattern** through:
-
-- real backend problems  
-- step-by-step object construction  
-- UML relationships  
-- and practical system design  
-
-▶️ Watch on YouTube:
-
-[Lecture Video](#)
+![Java](https://img.shields.io/badge/Language-Java-blue)
+![Pattern](https://img.shields.io/badge/Pattern-Builder-green)
+![Level](https://img.shields.io/badge/Level-Intermediate-orange)
+![Focus](https://img.shields.io/badge/Focus-Clean%20Code%20%26%20Design-purple)
 
 ---
 
-## 📌 Overview
+## 📌 About This Repository
 
-In the previous lecture, we studied the **Factory Pattern**, which helps us decide:
+This repository provides a **deep, practical understanding of the Builder Pattern** through structured examples and guided activities.
 
-> 👉 **Which object should be created?**
-
-In this lecture, we move forward to a different but related problem:
-
-> 👉 **How do we build complex objects step by step?**
-
-The **Builder Pattern** is a **creational design pattern** that helps us construct objects in a clean, readable, and flexible way — especially when the object contains many optional parameters.
+Instead of focusing only on theory, the goal is to help you:
+- Understand *why* the pattern exists
+- Recognize *when* to use it
+- Apply it in **real-world backend scenarios**
+- Write **clean, maintainable, and scalable code**
 
 ---
 
-## 🧠 Learning Goals
+## 🧠 Why Do We Need Builder?
 
-By the end of this lecture, students will be able to:
+In real systems, objects are rarely simple.
 
-1. Understand why constructors fail with many optional parameters  
-2. Recognize the **telescoping constructor problem**  
-3. Apply the Builder Pattern to build complex objects  
-4. Understand and explain **immutability** and why it is important  
-5. Identify UML relationships in Builder-based designs:
-   - **Composition** (Builder → Product)  
-   - **Encapsulation** (private constructor)  
-   - **Dependency** (Builder builds object)  
-6. Understand the difference between:
-   - Builder Pattern  
-   - Factory Pattern  
-   - Builder + Factory together  
-7. Apply both patterns in real backend scenarios  
+You often deal with:
+- Many optional fields
+- Conditional configurations
+- Different representations of the same object
 
----
+### ❌ The Problem
 
-## ⚠️ Why Builder Pattern Matters
+Using constructors directly leads to:
+- Poor readability  
+- High chance of mistakes (wrong parameter order)  
+- Difficult maintenance  
+- Explosion of constructor overloads  
 
-### Common Problems in Real Systems
-
-In backend systems, we often create objects like:
-
-- filters  
-- queries  
-- API requests  
-- configuration objects  
-- reports  
-- orders  
-
-These objects usually contain:
-
-- required fields  
-- many optional fields  
-
-Using constructors in such cases leads to:
-
-- long and unreadable parameter lists  
-- confusion about parameter order  
-- many overloaded constructors  
-- difficult maintenance  
-- high chance of bugs  
+This is known as the **Telescoping Constructor Problem**.
 
 ---
 
-### 🚨 Example Problem
+## ⚠️ Telescoping Constructor Problem (Deep Insight)
 
-```java
-SearchFilter filter = new SearchFilter(
-    "Electronics", 100.0, 500.0, "Samsung", true
-);
-```
+Imagine adding optional fields over time:
 
-### 🚨 Problems
+- Version 1 → only required fields  
+- Version 2 → add 2 optional fields  
+- Version 3 → add more options  
 
-- What does `100.0` mean?  
-- What does `true` represent?  
-- What if we don’t need all parameters?  
-- What if we add a new field later?  
+You end up with multiple constructors trying to cover all combinations.
 
----
-
-## ✅ Benefits of Using Builder Pattern
-
-- **Readability** → Clear and self-explanatory object creation  
-- **Flexibility** → Only set what you need  
-- **No Constructor Explosion** → Avoid multiple overloaded constructors  
-- **Maintainability** → Easy to add new fields  
-- **Validation** → Centralized in `build()`  
-- **Immutability** → Safe and predictable objects  
-
-> 💡 **Key Insight:**  
-> Builder does not remove complexity — it organizes it in a clean and readable way.
+### Result:
+- Code becomes rigid  
+- Hard to extend  
+- Difficult for other developers to use correctly  
 
 ---
 
-## 🧩 Key Concepts
+## ✅ Builder Pattern — Core Idea
 
-- **Product** → The final object being created  
-- **Builder** → Responsible for constructing the object step by step  
-- **Fluent Interface** → Method chaining (`return this`)  
-- **build() Method** → Final step that creates the object  
-- **Immutable Object** → Object cannot change after creation  
+The Builder Pattern solves this by:
 
----
+- Constructing objects **step-by-step**
+- Allowing **optional configuration**
+- Producing a **final immutable object**
 
-## 🧩 UML — Builder Structure
+### Key Characteristics:
 
-### Builder Pattern Relationships
-
-- **Composition** → Builder creates the object  
-- **Encapsulation** → Constructor is private  
-- **Dependency** → Object depends on Builder for creation  
+- Uses a **static inner Builder class**
+- Applies **method chaining (fluent interface)**
+- Separates:
+  - Construction logic
+  - Final object structure
 
 ---
 
-## 📚 Examples
+## 🧩 Structure of Builder Pattern
 
-All examples are provided in the [`/examples`](./examples) folder.
+### 1. Product
+The main class you want to build.
 
----
+### 2. Builder
+Responsible for:
+- Holding temporary values
+- Providing setter-like methods
+- Validating required fields
+- Creating the final object
 
-### 🔹 Example 1 — Builder Only
-
-#### Scenario
-
-A backend system that builds a **search filter** for products.
-
-#### Problem
-
-- Many optional parameters (price, brand, stock, etc.)  
-- Constructor becomes complex  
-
-#### Solution
-
-Use Builder to construct the object step by step.
-
-#### What this example demonstrates
-
-- Fluent API design  
-- Optional vs required parameters  
-- Validation inside `build()`  
-- Immutable object creation  
-- Clear UML relationships  
+### 3. Build Method
+- Performs validation
+- Returns a fully constructed object
 
 ---
 
-### 🔹 Example 2 — Builder + Factory
+## 💡 Example 1: Search Filter (Real Backend Use Case)
 
-#### Scenario
+### 🎯 Scenario
+Filtering products in an e-commerce system.
 
-A notification system that supports multiple types:
+### Why Builder Here?
 
-- Email  
-- SMS  
+Because filters are:
+- Highly dynamic
+- Mostly optional
+- Combined in different ways
 
-#### Problem
+### What Makes This Example Important?
 
-- Multiple object types → need Factory  
-- Each object has many fields → need Builder  
+- Mimics real APIs (`/products?minPrice=...&brand=...`)
+- Demonstrates **flexible query building**
+- Shows how to avoid constructor complexity
 
-#### Solution
-
-Use both patterns together:
-
-| Pattern | Responsibility |
-|--------|---------------|
-| Factory | Choose notification type |
-| Builder | Build the notification |
-
-#### What this example demonstrates
-
-- Separation of responsibilities  
-- How patterns work together  
-- Real backend system design  
-- Clean architecture  
+### Key Design Decisions:
+- `category` is mandatory → enforced in Builder constructor  
+- Optional fields are added fluently  
+- Object is **immutable after build()**
 
 ---
 
-## ⚖️ Builder vs Factory vs Combined
+## 💡 Example 2: Notification System (Builder + Factory)
 
-| Feature | Builder | Factory | Combined |
-|--------|--------|--------|----------|
-| Purpose | Build object step-by-step | Choose object type | Do both |
-| Focus | Construction | Creation decision | Flexible systems |
-| Use Case | Many optional fields | Multiple types | Complex systems |
-| Result | One object | One of many types | Flexible architecture |
+### 🎯 Scenario
+Sending notifications via:
+- Email
+- SMS
 
----
+### Design Challenge
 
-## 🧪 Activities
+Different objects require different fields:
+- Email → subject, body
+- SMS → phone, message
 
-### 1️⃣ SQL Query Builder
+### Solution Approach
 
-#### Scenario
+- **Factory Pattern** → decides *which type* to create  
+- **Builder Pattern** → decides *how to construct it*  
 
-We must build a system that generates SQL queries dynamically.
+### Why This Matters
 
-#### Goal
-
-Use Builder Pattern to construct SQL queries step by step.
-
-📁 See: [`activities/activity-1-sql-builder`](./activities/activity-1-sql-builder)
-
----
-
-### 2️⃣ Food Order System (Builder + Factory)
-
-#### Scenario
-
-A restaurant system with different meal types:
-
-- Burger  
-- Pizza  
-- Salad  
-
-Each meal has:
-
-- common fields  
-- optional extras  
-
-#### Goal
-
-Use Factory to select meal type and Builder to construct it.
-
-📁 See: [`activities/activity-2-food-order`](./activities/activity-2-food-order)
+This combination reflects **real backend architecture**, where:
+- Object type is dynamic
+- Construction logic is complex
 
 ---
 
-## 🚀 How to Use This Repository
+## 🧪 Activity 1: SQL Query Builder
 
-1. Fork the repository  
-2. Clone it locally  
-3. Explore [`/examples`](./examples) to understand implementations  
-4. Complete tasks inside [`/activities`](./activities)  
-5. Submit your solution via Pull Request  
+### 🎯 Goal
+Design a flexible system to dynamically build SQL queries.
 
----
+### Why This is Important
 
-## 💡 Tips for Students
+Hardcoded queries are:
+- Inflexible
+- Hard to modify
+- Error-prone
 
-Ask yourself:
+Builder allows:
+- Incremental query construction
+- Cleaner logic separation
+- Better readability
 
-> “Is this object too complex to build with a constructor?”
+### What You Should Focus On
 
-- If **YES** → consider Builder  
-
----
-
-Ask yourself:
-
-> “Do I have multiple object types?”
-
-- If **YES** → consider Factory  
+- Enforcing required fields (table name)
+- Supporting chaining operations
+- Keeping query generation clean and extendable
 
 ---
 
-If **both**:
+## 🍔 Activity 2: Food Order System
 
-- Use **Builder + Factory together**  
+### 🎯 Goal
+Design a system that supports multiple meal types with shared and optional features.
+
+### Design Challenges
+
+- Different meal types
+- Shared attributes
+- Optional add-ons
+
+### Expected Design Thinking
+
+- Use **Factory** to select meal type
+- Use **Builder** to configure the meal
+
+### What You Learn Here
+
+- Combining patterns effectively
+- Designing scalable object creation
+- Avoiding duplication across similar classes
 
 ---
 
-Always:
+## ⚖️ When to Use Builder Pattern
 
-- Think about responsibility  
-- Keep design clean  
-- Use UML before coding  
+Use Builder when:
 
----
-
-## 📎 Final Note
-
-The Builder Pattern is not just about writing a class.
-
-It is about designing **clear, flexible, and maintainable systems**.
+- Object has **many optional parameters**
+- Object creation is **complex or multi-step**
+- You want **immutable objects**
+- You need **readable and expressive code**
 
 ---
 
-Whenever you see:
+## 🚫 When NOT to Use It
 
-```java
-new Something(a, b, c, d, e)
-```
+Avoid Builder when:
 
+- Object is simple (2–3 fields only)
+- No optional parameters exist
+- Construction logic is trivial
 
-Stop and ask:
+---
 
-> “Is this becoming hard to read or maintain?”
+## 🆚 Builder vs Other Approaches
 
-If the answer is yes…
+| Approach | Problem |
+|--------|--------|
+| Constructors | Hard to read, not scalable |
+| Setters | Mutable objects, unsafe states |
+| Builder | Clean, safe, scalable ✅ |
 
-👉 **Builder Pattern is your solution.**
+---
+
+## 🧠 Best Practices
+
+- Always validate required fields inside `build()`
+- Keep the final object **immutable**
+- Use meaningful method names
+- Avoid exposing internal construction logic
+- Combine with other patterns when needed
+
+---
+
+## 🎯 Learning Outcomes
+
+After completing this repository, you should be able to:
+
+- Identify real-world problems solved by Builder
+- Replace telescoping constructors effectively
+- Design clean and maintainable object creation logic
+- Combine Builder with Factory in practical scenarios
+
+---
+
+## 🚀 How to Use
+
+1. Clone the repository
+2. Explore each example folder
+3. Understand the design before reading code
+4. Complete the activities independently
+5. Refactor your solutions for better design
+
+---
+
+## 🤝 Contribution
+
+Students are encouraged to:
+- Fork the repository
+- Implement missing parts
+- Improve existing designs
+- Submit Pull Requests for review
+
+---
+
+## 📌 Final Insight
+
+The Builder Pattern is not just about avoiding constructor overloads.
+
+It is about:
+- Writing **clear code**
+- Designing **flexible systems**
+- Building **objects the right way**
+
+---
