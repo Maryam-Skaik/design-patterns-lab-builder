@@ -1,8 +1,8 @@
 /*
  * Main.java
  *
- * Demonstrates how to use the SearchFilter.Builder to construct
- * SearchFilter objects in a clean, readable, and flexible way.
+ * Demonstrates using the SearchFilter.Builder with method chaining.
+ * Shows how optional fields can be set step-by-step in a readable way.
  */
 
 package SearchFilter;
@@ -12,22 +12,21 @@ public class Main {
     public static void main(String[] args) {
 
         // =======================
-        // Step-by-step Builder usage
+        // Builder Pattern with method chaining
         // =======================
 
-        // 1. Create a builder with the mandatory field
-        SearchFilter.Builder builder = new SearchFilter.Builder("Phones");
+        // We create the SearchFilter object directly by chaining setter methods
+        // after the Builder constructor, then call build() at the end.
+        SearchFilter filter = new SearchFilter.Builder("Phones") // mandatory category
+                .setBrand("Apple")       // optional brand filter
+                .setMinPrice(500)        // optional minimum price
+                .setMaxPrice(2000)       // optional maximum price
+                .setInStockOnly(true)    // optional in-stock-only filter
+                .build();                // finalize and get the SearchFilter object
 
-        // 2. Add optional filters using method chaining
-        builder.setBrand("Apple")
-               .setMinPrice(500)
-               .setMaxPrice(2000)
-               .setInStockOnly(true);
-
-        // 3. Build the final SearchFilter object
-        SearchFilter filter = builder.build();
-
-        // 4. Use the filter object
+        // =======================
+        // Use the built object
+        // =======================
         System.out.println("Category: " + filter.getCategory());
         System.out.println("Brand: " + filter.getBrand());
         System.out.println("Price Range: " + filter.getMinPrice() + " - " + filter.getMaxPrice());
