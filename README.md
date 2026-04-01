@@ -7,6 +7,16 @@
 
 ---
 
+## 🎥 Lecture Video
+
+This repository accompanies the lecture video explaining the Builder Pattern through **real-world problems, design reasoning, and practical examples**.
+
+▶️ Watch on YouTube: 
+
+[Lecture Video](https://youtu.be/amjmaQ2Q91c)
+
+---
+
 ## 📌 About This Repository
 
 This repository provides a **deep, practical understanding of the Builder Pattern** through structured examples and guided activities.
