@@ -1,7 +1,8 @@
 # 🏗️ Design Patterns Lab — Builder Pattern
 
 ![Java](https://img.shields.io/badge/Language-Java-blue)
-![Pattern](https://img.shields.io/badge/Pattern-Builder-green)
+![Pattern](https://img.shields.io/badge/Pattern-Builder-pink)
+![Week](https://img.shields.io/badge/Week-3-green)
 ![Level](https://img.shields.io/badge/Level-Intermediate-orange)
 ![Focus](https://img.shields.io/badge/Focus-Clean%20Code%20%26%20Design-purple)
 
@@ -200,6 +201,27 @@ Design a system that supports multiple meal types with shared and optional featu
 - Combining patterns effectively
 - Designing scalable object creation
 - Avoiding duplication across similar classes
+
+---
+
+## 💾 Solutions
+
+📁 [`solutions/`](solutions/)
+
+All activity solutions are available inside the `/solutions` folder.
+
+Each solution includes:
+- UML diagrams and design explanation
+- Clean and well-structured Java implementation
+- Notes about relationships and design decisions
+- Builder and Factory integration where applicable
+- Example usage through `Main.java`
+
+### Included Solutions
+- 🧪 SQL Query Builder
+- 🍔 Food Order System
+
+> Students are encouraged to complete the activities independently first, then use the provided solutions to compare implementations, understand design decisions, and explore alternative approaches.
 
 ---
 
